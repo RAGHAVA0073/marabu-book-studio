@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Books - MARABU BOOK STUDIO</title>
+</head>
+<body>
+  <h1>My Books</h1>
+
+  <div id="book-card">
+    <h2 id="book-title">No book saved yet</h2>
+    <p id="book-author"></p>
+    <p id="book-type"></p>
+    <p id="book-language"></p>
+    <p id="book-idea"></p>
+
+    <a href="create.html">
+      <button type="button">Edit Book Details</button>
+    </a>
+
+    <a href="write.html">
+      <button type="button">Write Book</button>
+    </a>
+  </div>
+
+  <p><a href="index.html">Back to Home</a></p>
+
+  <script>
+    const savedBook = JSON.parse(localStorage.getItem("marabuBook"));
+
+    if (savedBook) {
+      document.getElementById("book-title").textContent = savedBook.title;
+      document.getElementById("book-author").textContent =
+        "Author: " + savedBook.author;
+      document.getElementById("book-type").textContent =
+        "Book type: " + savedBook.bookType;
+      document.getElementById("book-language").textContent =
+        "Language: " + savedBook.language;
+      document.getElementById("book-idea").textContent =
+        "Main idea: " + savedBook.idea;
+    }
+  </script>
+</body>
+</html>
