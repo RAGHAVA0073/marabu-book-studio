@@ -8,6 +8,14 @@
 <body>
   <h1>Book Outline</h1>
 
+  <section>
+    <h2 id="book-title">Book title</h2>
+    <p id="book-author"></p>
+    <p id="book-type"></p>
+    <p id="book-language"></p>
+    <p id="book-idea"></p>
+  </section>
+
   <p>Edit your chapter outline before writing the book.</p>
 
   <div id="chapters">
@@ -34,6 +42,20 @@
   <p><a href="index.html">Back to Home</a></p>
 
   <script>
+    const savedBook = JSON.parse(localStorage.getItem("marabuBook"));
+
+    if (savedBook) {
+      document.getElementById("book-title").textContent = savedBook.title;
+      document.getElementById("book-author").textContent =
+        "Author: " + savedBook.author;
+      document.getElementById("book-type").textContent =
+        "Book type: " + savedBook.bookType;
+      document.getElementById("book-language").textContent =
+        "Language: " + savedBook.language;
+      document.getElementById("book-idea").textContent =
+        "Main idea: " + savedBook.idea;
+    }
+
     const chapters = document.getElementById("chapters");
     const addChapterButton = document.getElementById("add-chapter");
 
