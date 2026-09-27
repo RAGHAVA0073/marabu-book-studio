@@ -4,26 +4,136 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Preview - MARABU BOOK STUDIO</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #eeeeee;
+      color: #222222;
+      font-family: Georgia, serif;
+    }
+
+    #book-preview {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 36px 26px;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    #cover-image {
+      display: none;
+      width: min(100%, 420px);
+      max-height: 560px;
+      object-fit: contain;
+      margin: 0 auto 32px;
+    }
+
+    h1 {
+      color: #6b3f24;
+      text-align: center;
+    }
+
+    .book-information {
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .chapter {
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid #cccccc;
+    }
+
+    .chapter-content {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 1.08rem;
+    }
+
+    .button-row {
+      width: 100%;
+      max-width: 760px;
+      margin: 20px auto;
+      text-align: center;
+    }
+
+    button,
+    a {
+      display: inline-block;
+      margin: 6px;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 8px;
+      background: #6b3f24;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: #ffffff;
+      }
+
+      #book-preview {
+        max-width: none;
+        box-shadow: none;
+      }
+
+      .button-row {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      #book-preview {
+        padding: 24px 16px;
+      }
+
+      .chapter-content {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <main id="book-preview">
-    <h1 id="book-title">Book Preview</h1>
-    <p id="book-author"></p>
-    <p id="book-type"></p>
-    <p id="book-language"></p>
-    <p id="book-idea"></p>
+    <img id="cover-image" alt="Book cover">
 
-    <hr>
+    <h1 id="book-title">Book Preview</h1>
+
+    <div class="book-information">
+      <p id="book-author"></p>
+      <p id="book-type"></p>
+      <p id="book-language"></p>
+      <p id="book-idea"></p>
+    </div>
 
     <section id="chapters-preview"></section>
   </main>
 
-  <p>
-    <button type="button" onclick="window.print()">Print / Save as PDF</button>
-  </p>
+  <div class="button-row">
+    <button type="button" onclick="window.print()">
+      Print / Save as PDF
+    </button>
 
-  <p><a href="write.html">Back to Writing</a></p>
-  <p><a href="index.html">Back to Home</a></p>
+    <a href="cover.html">Edit Cover</a>
+    <a href="write.html">Back to Writing</a>
+    <a href="index.html">Back to Home</a>
+  </div>
 
   <script>
     const savedBook = JSON.parse(localStorage.getItem("marabuBook"));
@@ -32,7 +142,14 @@
     ) || [];
     const savedContents = JSON.parse(
       localStorage.getItem("marabuChapterContents")
-    ) || {};
+    ) || [];
+    const savedCover = localStorage.getItem("marabuCover");
+
+    if (savedCover) {
+      const coverImage = document.getElementById("cover-image");
+      coverImage.src = savedCover;
+      coverImage.style.display = "block";
+    }
 
     if (savedBook) {
       document.getElementById("book-title").textContent = savedBook.title;
@@ -50,12 +167,14 @@
 
     savedChapters.forEach(function (chapterTitle, index) {
       const chapterSection = document.createElement("section");
+      chapterSection.className = "chapter";
 
       const heading = document.createElement("h2");
       heading.textContent =
         "Chapter " + (index + 1) + ": " + chapterTitle;
 
       const content = document.createElement("p");
+      content.className = "chapter-content";
       content.textContent =
         savedContents[index] || "No content written yet.";
 
