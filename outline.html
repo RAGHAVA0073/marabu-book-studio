@@ -18,25 +18,10 @@
 
   <p>Edit your chapter outline before writing the book.</p>
 
-  <div id="chapters">
-    <label>Chapter 1</label><br>
-    <input type="text" value="Introduction"><br><br>
-
-    <label>Chapter 2</label><br>
-    <input type="text" value="The Main Story"><br><br>
-
-    <label>Chapter 3</label><br>
-    <input type="text" value="Important Turning Point"><br><br>
-
-    <label>Chapter 4</label><br>
-    <input type="text" value="Conclusion"><br><br>
-  </div>
+  <div id="chapters"></div>
 
   <button id="add-chapter" type="button">Add Chapter</button>
-
-  <p>
-    <button type="button">Continue to Writing</button>
-  </p>
+  <button id="save-outline" type="button">Save Outline</button>
 
   <p><a href="create.html">Back to Book Details</a></p>
   <p><a href="index.html">Back to Home</a></p>
@@ -57,23 +42,56 @@
     }
 
     const chapters = document.getElementById("chapters");
-    const addChapterButton = document.getElementById("add-chapter");
+    const defaultChapters = [
+      "Introduction",
+      "The Main Story",
+      "Important Turning Point",
+      "Conclusion"
+    ];
 
-    addChapterButton.addEventListener("click", function () {
-      const chapterNumber = chapters.querySelectorAll("input").length + 1;
+    const savedChapters = JSON.parse(
+      localStorage.getItem("marabuChapters")
+    ) || defaultChapters;
 
-      const label = document.createElement("label");
-      label.textContent = "Chapter " + chapterNumber;
+    function renderChapters() {
+      chapters.innerHTML = "";
 
-      const input = document.createElement("input");
-      input.type = "text";
-      input.value = "New Chapter";
+      savedChapters.forEach(function (chapterTitle, index) {
+        const label = document.createElement("label");
+        label.textContent = "Chapter " + (index + 1);
 
-      chapters.appendChild(label);
-      chapters.appendChild(document.createElement("br"));
-      chapters.appendChild(input);
-      chapters.appendChild(document.createElement("br"));
-      chapters.appendChild(document.createElement("br"));
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = chapterTitle;
+        input.dataset.chapterIndex = index;
+
+        chapters.appendChild(label);
+        chapters.appendChild(document.createElement("br"));
+        chapters.appendChild(input);
+        chapters.appendChild(document.createElement("br"));
+        chapters.appendChild(document.createElement("br"));
+      });
+    }
+
+    renderChapters();
+
+    document.getElementById("add-chapter").addEventListener("click", function () {
+      savedChapters.push("New Chapter");
+      renderChapters();
+    });
+
+    document.getElementById("save-outline").addEventListener("click", function () {
+      const inputs = chapters.querySelectorAll("input");
+      const updatedChapters = Array.from(inputs).map(function (input) {
+        return input.value;
+      });
+
+      localStorage.setItem(
+        "marabuChapters",
+        JSON.stringify(updatedChapters)
+      );
+
+      alert("Outline saved");
     });
   </script>
 </body>
