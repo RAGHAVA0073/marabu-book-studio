@@ -4,33 +4,133 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Outline - MARABU BOOK STUDIO</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #f5f1e8;
+      color: #222222;
+      font-family: Arial, sans-serif;
+    }
+
+    .outline-card {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 28px 22px;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    h1,
+    h2 {
+      color: #6b3f24;
+    }
+
+    .book-information {
+      padding: 16px;
+      background: #f5f1e8;
+      border-radius: 10px;
+    }
+
+    .chapter-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 12px 0;
+    }
+
+    .chapter-row input {
+      flex: 1;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #c9c1b8;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    button,
+    a {
+      display: inline-block;
+      margin: 6px 4px 6px 0;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 8px;
+      background: #6b3f24;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    button:hover,
+    a:hover {
+      background: #4f2d1a;
+    }
+
+    .delete-button {
+      background: #a33a3a;
+    }
+
+    .delete-button:hover {
+      background: #7d2929;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 14px;
+      }
+
+      .outline-card {
+        padding: 22px 16px;
+      }
+
+      .chapter-row {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .chapter-row input {
+        width: 100%;
+      }
+
+      .chapter-row button {
+        width: 100%;
+        margin-right: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Book Outline</h1>
+  <main class="outline-card">
+    <h1>Book Outline</h1>
 
-  <section>
-    <h2 id="book-title">Book title</h2>
-    <p id="book-author"></p>
-    <p id="book-type"></p>
-    <p id="book-language"></p>
-    <p id="book-idea"></p>
-  </section>
+    <section class="book-information">
+      <h2 id="book-title">Book title</h2>
+      <p id="book-author"></p>
+      <p id="book-type"></p>
+      <p id="book-language"></p>
+      <p id="book-idea"></p>
+    </section>
 
-  <p>Edit your chapter outline before writing the book.</p>
+    <p>Edit your chapter outline before writing the book.</p>
 
-  <div id="chapters"></div>
+    <div id="chapters"></div>
 
-  <button id="add-chapter" type="button">Add Chapter</button>
-  <button id="save-outline" type="button">Save Outline</button>
+    <button id="add-chapter" type="button">Add Chapter</button>
+    <button id="save-outline" type="button">Save Outline</button>
 
-  <p>
-    <a href="write.html">
-      <button type="button">Continue to Writing</button>
-    </a>
-  </p>
-
-  <p><a href="create.html">Back to Book Details</a></p>
-  <p><a href="index.html">Back to Home</a></p>
+    <p>
+      <a href="write.html">Continue to Writing</a>
+      <a href="create.html">Back to Book Details</a>
+      <a href="index.html">Back to Home</a>
+    </p>
+  </main>
 
   <script>
     const savedBook = JSON.parse(localStorage.getItem("marabuBook"));
@@ -55,57 +155,65 @@
       "Conclusion"
     ];
 
-    const savedChapters = JSON.parse(
+    let savedChapters = JSON.parse(
       localStorage.getItem("marabuChapters")
     ) || defaultChapters;
+
+    function saveCurrentChapters() {
+      const inputs = chapters.querySelectorAll("input");
+
+      savedChapters = Array.from(inputs).map(function (input) {
+        return input.value;
+      });
+
+      localStorage.setItem(
+        "marabuChapters",
+        JSON.stringify(savedChapters)
+      );
+    }
 
     function renderChapters() {
       chapters.innerHTML = "";
 
       savedChapters.forEach(function (chapterTitle, index) {
-        const label = document.createElement("label");
-        label.textContent = "Chapter " + (index + 1);
+        const row = document.createElement("div");
+        row.className = "chapter-row";
 
         const input = document.createElement("input");
         input.type = "text";
         input.value = chapterTitle;
 
-        chapters.appendChild(label);
-        chapters.appendChild(document.createElement("br"));
-        chapters.appendChild(input);
-        chapters.appendChild(document.createElement("br"));
-        chapters.appendChild(document.createElement("br"));
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "delete-button";
+        deleteButton.textContent = "Delete";
+
+        deleteButton.addEventListener("click", function () {
+          saveCurrentChapters();
+          savedChapters.splice(index, 1);
+          localStorage.setItem(
+            "marabuChapters",
+            JSON.stringify(savedChapters)
+          );
+          renderChapters();
+        });
+
+        row.appendChild(input);
+        row.appendChild(deleteButton);
+        chapters.appendChild(row);
       });
     }
 
     renderChapters();
 
     document.getElementById("add-chapter").addEventListener("click", function () {
-      const inputs = chapters.querySelectorAll("input");
-      const updatedChapters = Array.from(inputs).map(function (input) {
-        return input.value;
-      });
-
-      updatedChapters.push("New Chapter");
-      localStorage.setItem(
-        "marabuChapters",
-        JSON.stringify(updatedChapters)
-      );
-
-      location.reload();
+      saveCurrentChapters();
+      savedChapters.push("New Chapter");
+      renderChapters();
     });
 
     document.getElementById("save-outline").addEventListener("click", function () {
-      const inputs = chapters.querySelectorAll("input");
-      const updatedChapters = Array.from(inputs).map(function (input) {
-        return input.value;
-      });
-
-      localStorage.setItem(
-        "marabuChapters",
-        JSON.stringify(updatedChapters)
-      );
-
+      saveCurrentChapters();
       alert("Outline saved");
     });
   </script>
