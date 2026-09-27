@@ -10,38 +10,49 @@
 
   <p>Edit your chapter outline before writing the book.</p>
 
-  <label for="chapter-1">Chapter 1</label><br>
-  <input
-    id="chapter-1"
-    type="text"
-    value="Introduction"
-  ><br><br>
+  <div id="chapters">
+    <label>Chapter 1</label><br>
+    <input type="text" value="Introduction"><br><br>
 
-  <label for="chapter-2">Chapter 2</label><br>
-  <input
-    id="chapter-2"
-    type="text"
-    value="The Main Story"
-  ><br><br>
+    <label>Chapter 2</label><br>
+    <input type="text" value="The Main Story"><br><br>
 
-  <label for="chapter-3">Chapter 3</label><br>
-  <input
-    id="chapter-3"
-    type="text"
-    value="Important Turning Point"
-  ><br><br>
+    <label>Chapter 3</label><br>
+    <input type="text" value="Important Turning Point"><br><br>
 
-  <label for="chapter-4">Chapter 4</label><br>
-  <input
-    id="chapter-4"
-    type="text"
-    value="Conclusion"
-  ><br><br>
+    <label>Chapter 4</label><br>
+    <input type="text" value="Conclusion"><br><br>
+  </div>
 
-  <button type="button">Add Chapter</button>
-  <button type="button">Continue to Writing</button>
+  <button id="add-chapter" type="button">Add Chapter</button>
+
+  <p>
+    <button type="button">Continue to Writing</button>
+  </p>
 
   <p><a href="create.html">Back to Book Details</a></p>
   <p><a href="index.html">Back to Home</a></p>
+
+  <script>
+    const chapters = document.getElementById("chapters");
+    const addChapterButton = document.getElementById("add-chapter");
+
+    addChapterButton.addEventListener("click", function () {
+      const chapterNumber = chapters.querySelectorAll("input").length + 1;
+
+      const label = document.createElement("label");
+      label.textContent = "Chapter " + chapterNumber;
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = "New Chapter";
+
+      chapters.appendChild(label);
+      chapters.appendChild(document.createElement("br"));
+      chapters.appendChild(input);
+      chapters.appendChild(document.createElement("br"));
+      chapters.appendChild(document.createElement("br"));
+    });
+  </script>
 </body>
 </html>
