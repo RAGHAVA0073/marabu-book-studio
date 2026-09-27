@@ -4,56 +4,159 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Book - MARABU BOOK STUDIO</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #f5f1e8;
+      color: #222222;
+      font-family: Arial, sans-serif;
+    }
+
+    .form-card {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #6b3f24;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #c9c1b8;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 160px;
+      resize: vertical;
+    }
+
+    .primary-button,
+    .secondary-link {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px 18px;
+      border: 0;
+      border-radius: 9px;
+      background: #6b3f24;
+      color: #ffffff;
+      font-size: 1rem;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .primary-button:hover,
+    .secondary-link:hover {
+      background: #4f2d1a;
+    }
+
+    .secondary-link {
+      background: #8b735b;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 14px;
+      }
+
+      .form-card {
+        padding: 24px 16px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Create Your Book</h1>
+  <main class="form-card">
+    <h1>Create Your Book</h1>
 
-  <form id="book-form">
-    <label for="title">Book title</label><br>
-    <input id="title" name="title" type="text" required><br><br>
+    <form id="book-form">
+      <label for="title">Book title</label>
+      <input id="title" name="title" type="text" required>
 
-    <label for="author">Author</label><br>
-    <input id="author" name="author" type="text" required><br><br>
+      <label for="author">Author</label>
+      <input id="author" name="author" type="text" required>
 
-    <label for="book-type">Book type</label><br>
-    <select id="book-type" name="book-type">
-      <option>Children's Book</option>
-      <option>Fiction</option>
-      <option>Informative Book</option>
-      <option>Educational Book</option>
-      <option>Recipe Book</option>
-      <option>Manga</option>
-      <option>Technology Book</option>
-      <option>Guide / How-To Book</option>
-      <option>Story Book</option>
-      <option>Custom Book</option>
-    </select><br><br>
+      <label for="book-type">Book type</label>
+      <select id="book-type" name="book-type">
+        <option>Children's Book</option>
+        <option>Fiction</option>
+        <option>Informative Book</option>
+        <option>Educational Book</option>
+        <option>Recipe Book</option>
+        <option>Manga</option>
+        <option>Technology Book</option>
+        <option>Guide / How-To Book</option>
+        <option>Story Book</option>
+        <option>Custom Book</option>
+      </select>
 
-    <label for="language">Language</label><br>
-    <select id="language" name="language">
-      <option>English</option>
-      <option>Tamil</option>
-      <option>Hindi</option>
-      <option>Telugu</option>
-      <option>Malayalam</option>
-      <option>Kannada</option>
-      <option>Bengali</option>
-      <option>Marathi</option>
-      <option>Gujarati</option>
-      <option>Punjabi</option>
-      <option>Urdu</option>
-    </select><br><br>
+      <label for="language">Language</label>
+      <select id="language" name="language">
+        <option>English</option>
+        <option>Tamil</option>
+        <option>Hindi</option>
+        <option>Telugu</option>
+        <option>Malayalam</option>
+        <option>Kannada</option>
+        <option>Bengali</option>
+        <option>Marathi</option>
+        <option>Gujarati</option>
+        <option>Punjabi</option>
+        <option>Urdu</option>
+      </select>
 
-    <label for="idea">Main idea</label><br>
-    <textarea id="idea" name="idea" rows="8" cols="40" required></textarea><br><br>
+      <label for="idea">Main idea</label>
+      <textarea id="idea" name="idea" required></textarea>
 
-    <button type="submit">Save and Continue</button>
-  </form>
+      <button class="primary-button" type="submit">
+        Save and Continue
+      </button>
+    </form>
 
-  <p><a href="index.html">Back to home</a></p>
+    <a class="secondary-link" href="index.html">Back to Home</a>
+  </main>
 
   <script>
     const form = document.getElementById("book-form");
+
+    const savedBook = JSON.parse(
+      localStorage.getItem("marabuBook")
+    );
+
+    if (savedBook) {
+      document.getElementById("title").value = savedBook.title || "";
+      document.getElementById("author").value = savedBook.author || "";
+      document.getElementById("book-type").value = savedBook.bookType || "Story Book";
+      document.getElementById("language").value = savedBook.language || "English";
+      document.getElementById("idea").value = savedBook.idea || "";
+    }
 
     form.addEventListener("submit", function (event) {
       event.preventDefault();
@@ -67,7 +170,6 @@
       };
 
       localStorage.setItem("marabuBook", JSON.stringify(book));
-
       window.location.href = "outline.html";
     });
   </script>
