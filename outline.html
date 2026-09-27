@@ -23,6 +23,12 @@
   <button id="add-chapter" type="button">Add Chapter</button>
   <button id="save-outline" type="button">Save Outline</button>
 
+  <p>
+    <a href="write.html">
+      <button type="button">Continue to Writing</button>
+    </a>
+  </p>
+
   <p><a href="create.html">Back to Book Details</a></p>
   <p><a href="index.html">Back to Home</a></p>
 
@@ -63,7 +69,6 @@
         const input = document.createElement("input");
         input.type = "text";
         input.value = chapterTitle;
-        input.dataset.chapterIndex = index;
 
         chapters.appendChild(label);
         chapters.appendChild(document.createElement("br"));
@@ -76,8 +81,18 @@
     renderChapters();
 
     document.getElementById("add-chapter").addEventListener("click", function () {
-      savedChapters.push("New Chapter");
-      renderChapters();
+      const inputs = chapters.querySelectorAll("input");
+      const updatedChapters = Array.from(inputs).map(function (input) {
+        return input.value;
+      });
+
+      updatedChapters.push("New Chapter");
+      localStorage.setItem(
+        "marabuChapters",
+        JSON.stringify(updatedChapters)
+      );
+
+      location.reload();
     });
 
     document.getElementById("save-outline").addEventListener("click", function () {
