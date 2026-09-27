@@ -4,30 +4,93 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Books - MARABU BOOK STUDIO</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #f5f1e8;
+      color: #222222;
+      font-family: Arial, sans-serif;
+    }
+
+    .dashboard {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #6b3f24;
+      text-align: center;
+    }
+
+    .book-card {
+      max-width: 560px;
+      margin: 24px auto;
+      padding: 24px;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    #book-cover {
+      display: none;
+      width: min(100%, 280px);
+      max-height: 380px;
+      object-fit: contain;
+      margin: 0 auto 20px;
+      border-radius: 10px;
+    }
+
+    .button {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      padding: 13px;
+      border-radius: 9px;
+      background: #6b3f24;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .button:hover {
+      background: #4f2d1a;
+    }
+  </style>
 </head>
 <body>
-  <h1>My Books</h1>
+  <main class="dashboard">
+    <h1>My Books</h1>
 
-  <div id="book-card">
-    <h2 id="book-title">No book saved yet</h2>
-    <p id="book-author"></p>
-    <p id="book-type"></p>
-    <p id="book-language"></p>
-    <p id="book-idea"></p>
+    <section class="book-card">
+      <img id="book-cover" alt="Book cover">
 
-    <a href="create.html">
-      <button type="button">Edit Book Details</button>
-    </a>
+      <h2 id="book-title">No book saved yet</h2>
+      <p id="book-author"></p>
+      <p id="book-type"></p>
+      <p id="book-language"></p>
+      <p id="book-idea"></p>
 
-    <a href="write.html">
-      <button type="button">Write Book</button>
-    </a>
-  </div>
+      <a class="button" href="create.html">Edit Book Details</a>
+      <a class="button" href="outline.html">Edit Outline</a>
+      <a class="button" href="write.html">Write Book</a>
+      <a class="button" href="preview.html">Preview Book</a>
+    </section>
 
-  <p><a href="index.html">Back to Home</a></p>
+    <p style="text-align: center;">
+      <a href="index.html">Back to Home</a>
+    </p>
+  </main>
 
   <script>
     const savedBook = JSON.parse(localStorage.getItem("marabuBook"));
+    const savedCover = localStorage.getItem("marabuCover");
 
     if (savedBook) {
       document.getElementById("book-title").textContent = savedBook.title;
@@ -39,6 +102,12 @@
         "Language: " + savedBook.language;
       document.getElementById("book-idea").textContent =
         "Main idea: " + savedBook.idea;
+    }
+
+    if (savedCover) {
+      const bookCover = document.getElementById("book-cover");
+      bookCover.src = savedCover;
+      bookCover.style.display = "block";
     }
   </script>
 </body>
