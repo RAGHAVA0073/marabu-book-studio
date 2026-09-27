@@ -4,27 +4,128 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Write Book - MARABU BOOK STUDIO</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #f5f1e8;
+      color: #222222;
+      font-family: Arial, sans-serif;
+    }
+
+    .writing-card {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 28px 22px;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #6b3f24;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 6px;
+      font-weight: bold;
+    }
+
+    select,
+    textarea,
+    button,
+    a {
+      font: inherit;
+    }
+
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #c9c1b8;
+      border-radius: 8px;
+    }
+
+    textarea {
+      min-height: 360px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    button,
+    a {
+      display: inline-block;
+      margin: 12px 8px 0 0;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 8px;
+      background: #6b3f24;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    button:hover,
+    a:hover {
+      background: #4f2d1a;
+    }
+
+    #status {
+      min-height: 24px;
+      color: #39713b;
+      font-weight: bold;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 14px;
+      }
+
+      .writing-card {
+        padding: 22px 16px;
+      }
+
+      textarea {
+        min-height: 300px;
+      }
+
+      button,
+      a {
+        display: block;
+        width: 100%;
+        margin-right: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1 id="book-title">Write Your Book</h1>
+  <main class="writing-card">
+    <h1 id="book-title">Write Your Book</h1>
 
-  <label for="chapter-select">Select chapter</label><br>
-  <select id="chapter-select"></select><br><br>
+    <label for="chapter-select">Select chapter</label>
+    <select id="chapter-select"></select>
 
-  <label for="chapter-content">Chapter content</label><br>
-  <textarea
-    id="chapter-content"
-    rows="20"
-    cols="80"
-    placeholder="Write your chapter here..."
-  ></textarea><br><br>
+    <label for="chapter-content">Chapter content</label>
+    <textarea
+      id="chapter-content"
+      placeholder="Write your chapter here..."
+    ></textarea>
 
-  <button id="save-chapter" type="button">Save Chapter</button>
+    <button id="save-chapter" type="button">Save Chapter</button>
 
-  <p id="status"></p>
+    <p id="status"></p>
 
-  <p><a href="outline.html">Back to Outline</a></p>
-  <p><a href="index.html">Back to Home</a></p>
+    <a href="outline.html">Back to Outline</a>
+    <a href="preview.html">Open Preview</a>
+    <a href="index.html">Back to Home</a>
+  </main>
 
   <script>
     const savedBook = JSON.parse(localStorage.getItem("marabuBook"));
@@ -49,19 +150,12 @@
     });
 
     function getChapterContents() {
-      return JSON.parse(localStorage.getItem("marabuChapterContents")) || {};
+      return JSON.parse(
+        localStorage.getItem("marabuChapterContents")
+      ) || {};
     }
 
-    function loadChapter() {
-      const contents = getChapterContents();
-      const selectedChapter = chapterSelect.value;
-      chapterContent.value = contents[selectedChapter] || "";
-      status.textContent = "";
-    }
-
-    chapterSelect.addEventListener("change", loadChapter);
-
-    document.getElementById("save-chapter").addEventListener("click", function () {
+    function saveCurrentContent(showMessage) {
       const contents = getChapterContents();
       contents[chapterSelect.value] = chapterContent.value;
 
@@ -70,7 +164,33 @@
         JSON.stringify(contents)
       );
 
-      status.textContent = "Chapter saved";
+      if (showMessage) {
+        status.textContent = "Chapter saved";
+      }
+    }
+
+    function loadChapter() {
+      const contents = getChapterContents();
+      chapterContent.value = contents[chapterSelect.value] || "";
+      status.textContent = "";
+    }
+
+    chapterSelect.addEventListener("change", function () {
+      loadChapter();
+    });
+
+    chapterContent.addEventListener("input", function () {
+      saveCurrentContent(false);
+      status.textContent = "Saving...";
+      clearTimeout(window.saveMessageTimer);
+
+      window.saveMessageTimer = setTimeout(function () {
+        status.textContent = "Saved";
+      }, 500);
+    });
+
+    document.getElementById("save-chapter").addEventListener("click", function () {
+      saveCurrentContent(true);
     });
 
     loadChapter();
