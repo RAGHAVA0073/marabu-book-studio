@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write Book - MARABU BOOK STUDIO</title>
+</head>
+<body>
+  <h1 id="book-title">Write Your Book</h1>
+
+  <label for="chapter-select">Select chapter</label><br>
+  <select id="chapter-select"></select><br><br>
+
+  <label for="chapter-content">Chapter content</label><br>
+  <textarea
+    id="chapter-content"
+    rows="20"
+    cols="80"
+    placeholder="Write your chapter here..."
+  ></textarea><br><br>
+
+  <button id="save-chapter" type="button">Save Chapter</button>
+
+  <p id="status"></p>
+
+  <p><a href="outline.html">Back to Outline</a></p>
+  <p><a href="index.html">Back to Home</a></p>
+
+  <script>
+    const savedBook = JSON.parse(localStorage.getItem("marabuBook"));
+    const savedChapters = JSON.parse(
+      localStorage.getItem("marabuChapters")
+    ) || [];
+
+    const chapterSelect = document.getElementById("chapter-select");
+    const chapterContent = document.getElementById("chapter-content");
+    const status = document.getElementById("status");
+
+    if (savedBook) {
+      document.getElementById("book-title").textContent =
+        "Write: " + savedBook.title;
+    }
+
+    savedChapters.forEach(function (chapterTitle, index) {
+      const option = document.createElement("option");
+      option.value = index;
+      option.textContent = "Chapter " + (index + 1) + ": " + chapterTitle;
+      chapterSelect.appendChild(option);
+    });
+
+    function getChapterContents() {
+      return JSON.parse(localStorage.getItem("marabuChapterContents")) || {};
+    }
+
+    function loadChapter() {
+      const contents = getChapterContents();
+      const selectedChapter = chapterSelect.value;
+      chapterContent.value = contents[selectedChapter] || "";
+      status.textContent = "";
+    }
+
+    chapterSelect.addEventListener("change", loadChapter);
+
+    document.getElementById("save-chapter").addEventListener("click", function () {
+      const contents = getChapterContents();
+      contents[chapterSelect.value] = chapterContent.value;
+
+      localStorage.setItem(
+        "marabuChapterContents",
+        JSON.stringify(contents)
+      );
+
+      status.textContent = "Chapter saved";
+    });
+
+    loadChapter();
+  </script>
+</body>
+</html>
