@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Preview - MARABU BOOK STUDIO</title>
+</head>
+<body>
+  <main id="book-preview">
+    <h1 id="book-title">Book Preview</h1>
+    <p id="book-author"></p>
+    <p id="book-type"></p>
+    <p id="book-language"></p>
+    <p id="book-idea"></p>
+
+    <hr>
+
+    <section id="chapters-preview"></section>
+  </main>
+
+  <p>
+    <button type="button" onclick="window.print()">Print / Save as PDF</button>
+  </p>
+
+  <p><a href="write.html">Back to Writing</a></p>
+  <p><a href="index.html">Back to Home</a></p>
+
+  <script>
+    const savedBook = JSON.parse(localStorage.getItem("marabuBook"));
+    const savedChapters = JSON.parse(
+      localStorage.getItem("marabuChapters")
+    ) || [];
+    const savedContents = JSON.parse(
+      localStorage.getItem("marabuChapterContents")
+    ) || {};
+
+    if (savedBook) {
+      document.getElementById("book-title").textContent = savedBook.title;
+      document.getElementById("book-author").textContent =
+        "Author: " + savedBook.author;
+      document.getElementById("book-type").textContent =
+        "Book type: " + savedBook.bookType;
+      document.getElementById("book-language").textContent =
+        "Language: " + savedBook.language;
+      document.getElementById("book-idea").textContent =
+        "Main idea: " + savedBook.idea;
+    }
+
+    const chaptersPreview = document.getElementById("chapters-preview");
+
+    savedChapters.forEach(function (chapterTitle, index) {
+      const chapterSection = document.createElement("section");
+
+      const heading = document.createElement("h2");
+      heading.textContent =
+        "Chapter " + (index + 1) + ": " + chapterTitle;
+
+      const content = document.createElement("p");
+      content.textContent =
+        savedContents[index] || "No content written yet.";
+
+      chapterSection.appendChild(heading);
+      chapterSection.appendChild(content);
+      chaptersPreview.appendChild(chapterSection);
+    });
+  </script>
+</body>
+</html>
