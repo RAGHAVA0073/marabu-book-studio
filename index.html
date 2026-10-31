@@ -3,31 +3,174 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>MARABU BOOK STUDIO</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f1e8;
+      color: #29251f;
+    }
+
+    header {
+      background: #24201c;
+      color: white;
+      text-align: center;
+      padding: 35px 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+      letter-spacing: 2px;
+    }
+
+    header p {
+      margin-top: 10px;
+      color: #e5d8c4;
+    }
+
+    .intro {
+      text-align: center;
+      padding: 30px 20px 15px;
+    }
+
+    .book-section {
+      max-width: 900px;
+      margin: 25px auto;
+      padding: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 35px;
+      flex-wrap: wrap;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .book-cover {
+      width: 240px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .book-details {
+      max-width: 400px;
+    }
+
+    .book-details h2 {
+      margin-top: 0;
+      font-size: 28px;
+    }
+
+    .book-details p {
+      line-height: 1.6;
+    }
+
+    .buy-button {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 13px 25px;
+      background: #e58b24;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 7px;
+    }
+
+    .buy-button:hover {
+      background: #c96f12;
+    }
+
+    .studio-buttons {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .studio-buttons a {
+      display: inline-block;
+      margin: 8px;
+      padding: 12px 18px;
+      background: #29251f;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+
+    .studio-buttons a:hover {
+      background: #51463a;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #6b6258;
+      font-size: 14px;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>MARABU BOOK STUDIO</h1>
 
-  <p>Create. Write. Design. Publish.</p>
+  <header>
+    <h1>MARABU BOOK STUDIO</h1>
+    <p>Create. Write. Design. Publish.</p>
+  </header>
 
-  <p>Turn your ideas into beautiful books.</p>
+  <section class="intro">
+    <h2>Turn Your Ideas Into Beautiful Books</h2>
+    <p>Discover stories created by Marabu Books.</p>
+  </section>
 
-  <p>
-    <a href="create.html">
-      <button type="button">Create New Book</button>
+  <section class="book-section">
+
+    <a href="https://amzn.in/d/0betGzUy" target="_blank">
+      <img
+        src="Zooby.jpeg"
+        alt="Zooby: My Alien Friend book cover"
+        class="book-cover"
+      >
     </a>
-  </p>
 
-  <p>
-    <a href="my-books.html">
-      <button type="button">My Books</button>
-    </a>
-  </p>
+    <div class="book-details">
+      <h2>Zooby: My Alien Friend</h2>
 
-  <p>
-    <a href="preview.html">
-      <button type="button">Preview Book</button>
-    </a>
-  </p>
+      <p>
+        An exciting story about friendship, imagination, and an
+        unforgettable alien adventure.
+      </p>
+
+      <p><strong>Published by Marabu Books</strong></p>
+
+      <a
+        class="buy-button"
+        href="https://amzn.in/d/0betGzUy"
+        target="_blank"
+      >
+        Buy Now on Amazon
+      </a>
+    </div>
+
+  </section>
+
+  <section class="studio-buttons">
+    <a href="create.html">Create New Book</a>
+    <a href="my-books.html">My Books</a>
+    <a href="preview.html">Preview Book</a>
+  </section>
+
+  <footer>
+    © 2026 MARABU BOOK STUDIO. All rights reserved.
+  </footer>
+
 </body>
 </html>
